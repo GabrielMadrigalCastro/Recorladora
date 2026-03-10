@@ -38,7 +38,7 @@ fun FormulaEditScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(if (state.isEdit) "Editar nota" else "Nueva nota") })
+            TopAppBar(title = { Text(if (state.isEdit) "Editar formula" else "Nueva formula") })
         }) { pad ->
         Column(
             Modifier
