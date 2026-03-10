@@ -9,12 +9,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-data class FormulaDetailUiState(val note: Formula? = null)
+data class FormulaDetailUiState(val formula: Formula? = null)
 
-class NoteDetailViewModel(
-    id: Long, observeById: ObserveFormulaByIdUseCase
+class FormulaDetailViewModel(
+    id: Long,
+    observeById: ObserveFormulaByIdUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<FormulaDetailUiState> = observeById(id).map { FormulaDetailUiState(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), FormulaDetailUiState())
+    val uiState: StateFlow<FormulaDetailUiState> =
+        observeById(id)
+            .map { FormulaDetailUiState(it) }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                FormulaDetailUiState()
+            )
 }

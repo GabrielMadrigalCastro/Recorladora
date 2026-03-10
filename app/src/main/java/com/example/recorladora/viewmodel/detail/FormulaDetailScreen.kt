@@ -24,7 +24,7 @@ import com.example.recorladora.repository.AppContainer
 fun FormulaDetailScreen(
     container: AppContainer, id: Long, onBack: () -> Unit, onEdit: () -> Unit
 ) {
-    val viewModel = remember(id) { NoteDetailViewModel(id, container.observeFormulaById) }
+    val viewModel = remember(id) { FormulaDetailViewModel(id, container.observeFormulaById) }
     val state by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -35,19 +35,24 @@ fun FormulaDetailScreen(
                 TextButton(onClick = onEdit) { Text("Editar") }
             })
         }) { pad ->
-        val note = state.note
+        val formula = state.formula
         Column(
             Modifier
                 .padding(pad)
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            if (note == null) {
-                Text("No existe la nota (quizá fue eliminada).")
+            if (formula == null) {
+                Text("No existe la fórmula.")
             } else {
-                Text(note.title, style = MaterialTheme.typography.headlineSmall)
+                Text(formula.formula, style = MaterialTheme.typography.headlineSmall)
+
                 Spacer(Modifier.height(10.dp))
-                Text(note.content, style = MaterialTheme.typography.bodyLarge)
+
+                Text(
+                    "= ${formula.answer}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

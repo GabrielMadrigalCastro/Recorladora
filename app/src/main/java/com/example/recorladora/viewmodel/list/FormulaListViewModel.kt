@@ -23,15 +23,30 @@ class FormulaListViewModel(
     private val query = MutableStateFlow("")
     private val formulas = observeFormulas()
 
-    val uiState: StateFlow<FormulaListUiState> = combine(query, formulas) { q, list ->
-        val filtered = if (q.isBlank()) list else {
-            val qq = q.trim().lowercase()
-            list.filter {
-                it.title.lowercase().contains(qq) || it.content.lowercase().contains(qq)
-            }
-        }
-        FormulaListUiState(query = q, items = filtered)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), FormulaListUiState())
+    val uiState: StateFlow<FormulaListUiState> =
+        combine(query, formulas) { q, list ->
+
+            val filtered =
+                if (q.isBlank()) list
+                else {
+                    val qq = q.trim().lowercase()
+
+                    list.filter {
+                        it.formula.lowercase().contains(qq) ||
+                                it.answer.lowercase().contains(qq)
+                    }
+                }
+
+            FormulaListUiState(
+                query = q,
+                items = filtered
+            )
+
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            FormulaListUiState()
+        )
 
     fun onQueryChange(value: String) {
         query.value = value

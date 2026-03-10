@@ -91,10 +91,9 @@ private fun NoteRow(
             .clickable { onOpen() }
             .padding(14.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Column(Modifier.weight(1f)) {
-                Text(note.title, style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.height(4.dp))
-                Text(note.content, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
+            Column {
+                Text(note.formula)
+                Text("= ${note.answer}")
             }
 
             Row {
