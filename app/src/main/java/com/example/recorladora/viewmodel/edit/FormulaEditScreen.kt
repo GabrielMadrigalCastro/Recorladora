@@ -38,7 +38,7 @@ fun FormulaEditScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(if (state.isEdit) "Editar nota" else "Nueva nota") })
+            TopAppBar(title = { Text(if (state.isEdit) "Editar formula" else "Nueva formula") })
         }) { pad ->
         Column(
             Modifier
@@ -48,21 +48,16 @@ fun FormulaEditScreen(
         ) {
 
             OutlinedTextField(
-                value = state.title,
-                onValueChange = viewModel::onTitleChange,
-                label = { Text("Título") },
+                value = state.formula,
+                onValueChange = viewModel::onFormulaChange,
+                label = { Text("Fórmula") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(Modifier.height(12.dp))
 
-            OutlinedTextField(
-                value = state.content,
-                onValueChange = viewModel::onContentChange,
-                label = { Text("Contenido") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
+            Text(
+                text = "Resultado: ${state.answer}",
             )
 
             Spacer(Modifier.height(16.dp))
