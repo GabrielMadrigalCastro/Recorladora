@@ -47,9 +47,9 @@ fun FormulaListScreen(
     }
     val state by viewModel.uiState.collectAsState()
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Notas") }) }, floatingActionButton = {
+    Scaffold(topBar = { TopAppBar(title = { Text("Formulas") }) }, floatingActionButton = {
         FloatingActionButton(onClick = onAdd) {
-            Icon(Icons.Default.Add, contentDescription = "Agregar")
+            Icon(Icons.Default.Add, contentDescription = "Add")
         }
     }) { pad ->
         Column(
@@ -98,10 +98,10 @@ private fun NoteRow(
 
             Row {
                 IconButton(onClick = onEdit) {
-                    Icon(Icons.Default.Edit, contentDescription = "Editar")
+                    Icon(Icons.Default.Edit, contentDescription = "Edit")
                 }
                 IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = "Eliminar")
+                    Icon(Icons.Default.Delete, contentDescription = "Delete")
                 }
             }
         }

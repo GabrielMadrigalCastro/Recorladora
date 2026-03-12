@@ -1,6 +1,9 @@
 package com.example.recorladora.viewmodel.edit
 
+import androidx.compose.ui.res.stringResource
+import com.example.recorladora.R
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.recorladora.repository.AppContainer
 
@@ -38,7 +42,7 @@ fun FormulaEditScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(if (state.isEdit) "Editar formula" else "Nueva formula") })
+            TopAppBar(title = { Text(if (state.isEdit) stringResource(R.string.edit) + stringResource(R.string.function) else stringResource(R.string.new_formula) )})
         }) { pad ->
         Column(
             Modifier
@@ -50,14 +54,14 @@ fun FormulaEditScreen(
             OutlinedTextField(
                 value = state.formula,
                 onValueChange = viewModel::onFormulaChange,
-                label = { Text("Fórmula") },
+                label = { Text(text = stringResource(R.string.function)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(Modifier.height(12.dp))
 
             Text(
-                text = "Resultado: ${state.answer}",
+                text = stringResource(R.string.result) + ": ${state.answer}"
             )
 
             Spacer(Modifier.height(16.dp))
@@ -67,8 +71,9 @@ fun FormulaEditScreen(
                 enabled = state.canSave,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Guardar")
+                Text(text = stringResource(R.string.save))
             }
         }
     }
 }
+

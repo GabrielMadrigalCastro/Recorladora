@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name" translatable="false">Recorladora</string>
+    <string name="functions">Funciones</string>
+    <string name="function">Function</string>
+    <string name="add">Añadir</string>
+    <string name="search">Buscar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="save">Guardar</string>
+    <string name="result">Resultado</string>
+    <string name="new_formula">Nueva función</string>
+</resources>
