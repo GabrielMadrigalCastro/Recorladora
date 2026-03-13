@@ -8,10 +8,10 @@ import com.example.recorladora.database.ObserveFormulaByIdUseCase
 import com.example.recorladora.database.UpdateFormulaUseCase
 
 class AppContainer {
-    val FormulaRepository: IFormulaRepository = FakeFormulaRepository()
-    val observeAllFormulas = ObserveAllFormulasUseCase(FormulaRepository)
-    val observeFormulaById = ObserveFormulaByIdUseCase(FormulaRepository)
-    val addFormula = AddFormulaUseCase(FormulaRepository)
-    val updateFormula = UpdateFormulaUseCase(FormulaRepository)
-    val deleteFormula = DeleteFormulaUseCase(FormulaRepository)
+    val formulaRepository: IFormulaRepository = FakeFormulaRepository()
+    val observeAllFormulas = ObserveAllFormulasUseCase(formulaRepository)
+    val observeFormulaById = ObserveFormulaByIdUseCase(formulaRepository)
+    val addFormula = AddFormulaUseCase(formulaRepository)
+    val updateFormula = UpdateFormulaUseCase(formulaRepository)
+    val deleteFormula = DeleteFormulaUseCase(formulaRepository)
 }

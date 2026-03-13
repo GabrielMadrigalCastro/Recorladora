@@ -7,9 +7,10 @@ import com.example.recorladora.repository.IFormulaRepository
 class AddFormulaUseCase(private val repository: IFormulaRepository) {
 
     suspend operator fun invoke(
-        formula: String,
-        answer: String
+        title: String,
+        expression: String,
+        result: String
     ): Long {
-        return repository.add(formula, answer)
+        return repository.add(title, expression, result)
     }
 }

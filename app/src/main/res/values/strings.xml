@@ -9,4 +9,9 @@
     <string name="save">Save</string>
     <string name="result">Result</string>
     <string name="new_formula">New function</string>
+    <string name="detail">Detail</string>
+    <string name="back">Back</string>
+    <string name="expression">Expression</string>
+    <string name="the_formula_doesnt_exist">The formula does not exist</string>
+    <string name="error">Error</string>
 </resources>

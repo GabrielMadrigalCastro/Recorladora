@@ -31,7 +31,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.recorladora.R
 import com.example.recorladora.model.Formula
 import com.example.recorladora.repository.AppContainer
 
@@ -47,9 +49,9 @@ fun FormulaListScreen(
     }
     val state by viewModel.uiState.collectAsState()
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Formulas") }) }, floatingActionButton = {
+    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.functions)) }) }, floatingActionButton = {
         FloatingActionButton(onClick = onAdd) {
-            Icon(Icons.Default.Add, contentDescription = "Add")
+            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
         }
     }) { pad ->
         Column(
@@ -62,7 +64,7 @@ fun FormulaListScreen(
             OutlinedTextField(
                 value = state.query,
                 onValueChange = viewModel::onQueryChange,
-                label = { Text("Buscar") },
+                label = { Text(stringResource(R.string.search)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -92,16 +94,28 @@ private fun NoteRow(
             .padding(14.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
-                Text(note.formula)
-                Text("= ${note.answer}")
+                Text(
+                    note.title,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    note.expression,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    "= ${note.result}",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
 
             Row {
                 IconButton(onClick = onEdit) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit")
+                    Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit))
                 }
                 IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
                 }
             }
         }

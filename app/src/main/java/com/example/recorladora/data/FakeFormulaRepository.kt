@@ -11,9 +11,9 @@ class FakeFormulaRepository : IFormulaRepository {
 
     private val formulas = MutableStateFlow(
         listOf(
-            Formula(1, "2 + 2", "4", now(), now()),
-            Formula(2, "5 * 3", "15", now(), now()),
-            Formula(3, "10 / 2", "5", now(), now())
+            Formula(1, "Suma básica", "2 + 2", "4.0", now(), now()),
+            Formula(2, "Multiplicación", "5 * 3", "15.0", now(), now()),
+            Formula(3, "División", "10 / 2", "5.0", now(), now())
         )
     )
 
@@ -24,17 +24,22 @@ class FakeFormulaRepository : IFormulaRepository {
     override fun observeById(id: Long): Flow<Formula?> =
         formulas.map { list -> list.firstOrNull { it.id == id } }
 
-    override suspend fun add(formula: String, answer: String): Long {
+    override suspend fun add(
+        title: String,
+        expression: String,
+        result: String
+    ): Long {
 
         val id = nextId++
         val timestamp = now()
 
         val newFormula = Formula(
-            id,
-            formula.trim(),
-            answer.trim(),
-            timestamp,
-            timestamp
+            id = id,
+            title = title.trim(),
+            expression = expression.trim(),
+            result = result.trim(),
+            createdAt = timestamp,
+            updatedAt = timestamp
         )
 
         formulas.update { it + newFormula }
@@ -44,8 +49,9 @@ class FakeFormulaRepository : IFormulaRepository {
 
     override suspend fun update(
         id: Long,
-        formula: String,
-        answer: String
+        title: String,
+        expression: String,
+        result: String
     ): Boolean {
 
         var updated = false
@@ -55,8 +61,9 @@ class FakeFormulaRepository : IFormulaRepository {
                 if (item.id == id) {
                     updated = true
                     item.copy(
-                        formula = formula.trim(),
-                        answer = answer.trim(),
+                        title = title.trim(),
+                        expression = expression.trim(),
+                        result = result.trim(),
                         updatedAt = now()
                     )
                 } else {

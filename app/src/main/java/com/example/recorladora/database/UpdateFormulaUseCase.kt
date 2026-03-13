@@ -6,9 +6,10 @@ class UpdateFormulaUseCase(private val repository: IFormulaRepository) {
 
     suspend operator fun invoke(
         id: Long,
-        formula: String,
-        answer: String
+        title: String,
+        expression: String,
+        result: String
     ): Boolean {
-        return repository.update(id, formula, answer)
+        return repository.update(id, title, expression, result)
     }
 }

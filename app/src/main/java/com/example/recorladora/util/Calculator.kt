@@ -37,9 +37,9 @@ private fun evaluate(tokens: List<String>): Double {
     val ops = mutableListOf<String>()
 
     fun applyOp() {
-        val b = values.removeLast()
-        val a = values.removeLast()
-        val op = ops.removeLast()
+        val b = values.removeAt(values.lastIndex)
+        val a = values.removeAt(values.lastIndex)
+        val op = ops.removeAt(values.lastIndex)
 
         val result = when (op) {
             "+" -> a + b

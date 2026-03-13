@@ -32,8 +32,9 @@ class FormulaListViewModel(
                     val qq = q.trim().lowercase()
 
                     list.filter {
-                        it.formula.lowercase().contains(qq) ||
-                                it.answer.lowercase().contains(qq)
+                        it.title.lowercase().contains(qq) ||
+                                it.expression.lowercase().contains(qq) ||
+                                it.result.lowercase().contains(qq)
                     }
                 }
 

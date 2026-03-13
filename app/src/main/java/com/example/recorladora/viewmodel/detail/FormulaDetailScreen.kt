@@ -16,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.recorladora.R
 import com.example.recorladora.repository.AppContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,10 +31,10 @@ fun FormulaDetailScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Detalle") }, navigationIcon = {
-                TextButton(onClick = onBack) { Text("Atrás") }
+            TopAppBar(title = { Text(stringResource(R.string.detail)) }, navigationIcon = {
+                TextButton(onClick = onBack) { Text(stringResource(R.string.back)) }
             }, actions = {
-                TextButton(onClick = onEdit) { Text("Editar") }
+                TextButton(onClick = onEdit) { Text(stringResource(R.string.edit)) }
             })
         }) { pad ->
         val formula = state.formula
@@ -43,14 +45,26 @@ fun FormulaDetailScreen(
                 .padding(16.dp)
         ) {
             if (formula == null) {
-                Text("No existe la fórmula.")
+                Text((stringResource(R.string.the_formula_doesnt_exist)))
             } else {
-                Text(formula.formula, style = MaterialTheme.typography.headlineSmall)
+                Text(
+                    formula.title,
+                    style = MaterialTheme.typography.headlineSmall
+                )
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(12.dp))
 
                 Text(
-                    "= ${formula.answer}",
+                    stringResource(R.string.expression) + ":",
+                    style = MaterialTheme.typography.labelMedium
+                )
+
+                Text(formula.expression)
+
+                Spacer(Modifier.height(8.dp))
+
+                Text(
+                    stringResource(R.string.result) + ": ${formula.result}",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

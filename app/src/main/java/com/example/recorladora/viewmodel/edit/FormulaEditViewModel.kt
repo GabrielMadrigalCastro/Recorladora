@@ -16,11 +16,14 @@ import kotlinx.coroutines.launch
 
 
 data class FormulaEditUiState(
-    val isEdit: Boolean = false,
-    val formula: String = "",
-    val answer: String = "",
-    val canSave: Boolean = false
-)
+    val title: String = "",
+    val expression: String = "",
+    val result: String = "",
+    val isEdit: Boolean = false
+) {
+    val canSave: Boolean
+        get() = title.isNotBlank() && expression.isNotBlank() && result != "Error"
+}
 
 class FormulaEditViewModel(
     private val id: Long?,
@@ -28,23 +31,21 @@ class FormulaEditViewModel(
     private val add: AddFormulaUseCase,
     private val update: UpdateFormulaUseCase
 ) : ViewModel() {
-    private val formula = MutableStateFlow("")
-    private val answer = MutableStateFlow("")
+    private val title = MutableStateFlow("")
+    private val expression = MutableStateFlow("")
+    private val result = MutableStateFlow("")
     private val loaded = MutableStateFlow(false)
 
     val uiState: StateFlow<FormulaEditUiState> =
-        combine(formula, answer, loaded) { f, a, isLoaded ->
+        combine(title, expression, result, loaded) { t, e, r, isLoaded ->
 
             val isEdit = id != null
 
-            val canSave =
-                f.trim().isNotEmpty()
-
             FormulaEditUiState(
-                isEdit = isEdit,
-                formula = f,
-                answer = a,
-                canSave = canSave && (isEdit.not() || isLoaded)
+                title = t,
+                expression = e,
+                result = r,
+                isEdit = isEdit
             )
         }.stateIn(
             viewModelScope,
@@ -57,8 +58,9 @@ class FormulaEditViewModel(
             viewModelScope.launch {
                 observeById(id).collect { item ->
                     if (item != null && !loaded.value) {
-                        formula.value = item.formula
-                        answer.value = item.answer
+                        title.value = item.title
+                        expression.value = item.expression
+                        result.value = item.result
                         loaded.value = true
                     }
                 }
@@ -68,24 +70,25 @@ class FormulaEditViewModel(
         }
     }
 
-    fun onFormulaChange(v: String) {
-        formula.value = v
-        answer.value = evaluateExpression(v)
+    fun onTitleChange(v: String) {
+        title.value = v
     }
 
-    fun onAnswerChange(v: String) {
-        answer.value = v
+    fun onExpressionChange(v: String) {
+        expression.value = v
+        result.value = evaluateExpression(v)
     }
 
     fun save(onDone: () -> Unit) {
         viewModelScope.launch {
-            val f = formula.value
-            val a = answer.value
+            val t = title.value
+            val e = expression.value
+            val r = result.value
 
             if (id == null)
-                add(f, a)
+                add(t, e, r)
             else
-                update(id, f, a)
+                update(id, t, e, r)
 
             onDone()
         }
