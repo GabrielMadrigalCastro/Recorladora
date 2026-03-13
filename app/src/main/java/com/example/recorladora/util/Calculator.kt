@@ -39,7 +39,7 @@ private fun evaluate(tokens: List<String>): Double {
     fun applyOp() {
         val b = values.removeAt(values.lastIndex)
         val a = values.removeAt(values.lastIndex)
-        val op = ops.removeAt(values.lastIndex)
+        val op = ops.removeAt(ops.lastIndex)
 
         val result = when (op) {
             "+" -> a + b
