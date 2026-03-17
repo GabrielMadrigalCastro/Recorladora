@@ -1,4 +1,4 @@
-package com.example.recorladora.viewmodel.detail
+package com.example.recorladora.presentation.formula.detail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,14 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.recorladora.R
+import com.example.recorladora.domain.repository.IFormulaRepository
 import com.example.recorladora.repository.AppContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormulaDetailScreen(
-    container: AppContainer, id: Long, onBack: () -> Unit, onEdit: () -> Unit
+    repository: IFormulaRepository, id: Long, onBack: () -> Unit, onEdit: () -> Unit
 ) {
-    val viewModel = remember(id) { FormulaDetailViewModel(id, container.observeFormulaById) }
+    val viewModel = remember(id) { FormulaDetailViewModel(id, repository) }
     val state by viewModel.uiState.collectAsState()
 
     Scaffold(

@@ -1,4 +1,4 @@
-package com.example.recorladora.viewmodel.edit
+package com.example.recorladora.presentation.formula.edit
 
 
 import androidx.lifecycle.ViewModel

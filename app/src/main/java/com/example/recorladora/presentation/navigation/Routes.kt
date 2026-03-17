@@ -1,4 +1,4 @@
-package com.example.recorladora.viewmodel.navigation
+package com.example.recorladora.presentation.navigation
 
 object Routes {
     const val LIST = "list"

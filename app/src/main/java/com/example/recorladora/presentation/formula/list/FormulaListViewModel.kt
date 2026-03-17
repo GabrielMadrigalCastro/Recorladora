@@ -1,4 +1,4 @@
-package com.example.recorladora.viewmodel.list
+package com.example.recorladora.presentation.formula.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.example.recorladora.viewmodel.navigation
+package com.example.recorladora.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
@@ -6,19 +6,18 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.recorladora.repository.AppContainer
-import com.example.recorladora.viewmodel.detail.FormulaDetailScreen
-import com.example.recorladora.viewmodel.edit.FormulaEditScreen
-import com.example.recorladora.viewmodel.list.FormulaListScreen
+import com.example.recorladora.core.app.FormulasApp
+import com.example.recorladora.presentation.formula.detail.FormulaDetailScreen
+import com.example.recorladora.presentation.formula.edit.FormulaEditScreen
+import com.example.recorladora.presentation.formula.list.FormulaListScreen
 
 @Composable
-fun AppNavGraph(container: AppContainer) {
+fun AppNavGraph() {
     val nav = rememberNavController()
 
     NavHost(navController = nav, startDestination = Routes.LIST) {
         composable(Routes.LIST) {
             FormulaListScreen(
-                container = container,
                 onAdd = { nav.navigate(Routes.edit(null)) },
                 onOpen = { id -> nav.navigate(Routes.detail(id)) },
                 onEdit = { id -> nav.navigate(Routes.edit(id)) })
@@ -30,8 +29,6 @@ fun AppNavGraph(container: AppContainer) {
             val id = it.arguments?.getLong("id") ?: return@composable
 
             FormulaDetailScreen(
-                container = container,
-                id = id,
                 onBack = { nav.popBackStack() },
                 onEdit = { nav.navigate(Routes.edit(id)) })
         }
@@ -46,7 +43,7 @@ fun AppNavGraph(container: AppContainer) {
             val id: Long? = raw.takeIf { v -> v > 0 }
 
             FormulaEditScreen(
-                container = container, id = id, onDone = { nav.popBackStack() })
+                onDone = { nav.popBackStack() })
         }
     }
 }
