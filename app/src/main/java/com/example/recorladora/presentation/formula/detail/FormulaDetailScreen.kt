@@ -26,7 +26,7 @@ import com.example.recorladora.R
 @Composable
 fun FormulaDetailScreen(
     onBack: () -> Unit,
-    onEdit: () -> Unit,
+    onEdit: (Long) -> Unit,
     viewModel: FormulaDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,7 +36,11 @@ fun FormulaDetailScreen(
             TopAppBar(title = { Text(stringResource(R.string.detail)) }, navigationIcon = {
                 TextButton(onClick = onBack) { Text(stringResource(R.string.back)) }
             }, actions = {
-                TextButton(onClick = onEdit) { Text(stringResource(R.string.edit)) }
+                state.formula?.let { formula ->
+                    TextButton(onClick = { onEdit(formula.id) }) {
+                        Text(stringResource(R.string.edit))
+                    }
+                }
             })
         }) { pad ->
         val formula = state.formula
