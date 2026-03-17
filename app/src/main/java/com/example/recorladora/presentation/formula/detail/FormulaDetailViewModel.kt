@@ -1,35 +1,52 @@
 package com.example.recorladora.presentation.formula.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recorladora.database.ObserveFormulaByIdUseCase
+import com.example.recorladora.domain.model.Formula
 import com.example.recorladora.domain.repository.IFormulaRepository
-import com.example.recorladora.model.Formula
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-data class FormulaDetailUiState(val formula: Formula? = null)
+data class FormulaDetailUiState(
+    val formula: Formula? = null,
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
 
-class FormulaDetailViewModel(
-    private val id: Long,
-    private val repository: IFormulaRepository
+@HiltViewModel
+class FormulaDetailViewModel @Inject constructor(
+    private val repository: IFormulaRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val id: Long = checkNotNull(savedStateHandle["id"])
 
     private val _uiState = MutableStateFlow(FormulaDetailUiState())
     val uiState: StateFlow<FormulaDetailUiState> = _uiState
 
     init {
-        loadFormula()
+        load()
     }
 
-    private fun loadFormula() {
+    private fun load() {
         viewModelScope.launch {
-            val formula = repository.getById(id)
-            _uiState.value = FormulaDetailUiState(formula)
+            _uiState.value = FormulaDetailUiState(isLoading = true)
+
+            try {
+                val formula = repository.getById(id)
+                _uiState.value = FormulaDetailUiState(formula = formula)
+            } catch (e: Exception) {
+                _uiState.value = FormulaDetailUiState(
+                    error = e.message ?: "Error desconocido"
+                )
+            }
         }
     }
 }

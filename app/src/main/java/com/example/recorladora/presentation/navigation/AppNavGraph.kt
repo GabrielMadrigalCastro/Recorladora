@@ -6,7 +6,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.recorladora.core.app.FormulasApp
 import com.example.recorladora.presentation.formula.detail.FormulaDetailScreen
 import com.example.recorladora.presentation.formula.edit.FormulaEditScreen
 import com.example.recorladora.presentation.formula.list.FormulaListScreen
@@ -30,7 +29,8 @@ fun AppNavGraph() {
 
             FormulaDetailScreen(
                 onBack = { nav.popBackStack() },
-                onEdit = { nav.navigate(Routes.edit(id)) })
+                onEdit = { id -> nav.navigate(Routes.edit(id)) }
+            )
         }
 
         composable(

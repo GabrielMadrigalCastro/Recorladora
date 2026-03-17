@@ -20,22 +20,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.recorladora.repository.AppContainer
+import com.example.recorladora.domain.repository.IFormulaRepository
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormulaEditScreen(
-    container: AppContainer, id: Long?, onDone: () -> Unit
+    repository: IFormulaRepository, id: Long?, onDone: () -> Unit
 ) {
     val viewModel = remember(id) {
         FormulaEditViewModel(
             id = id,
-            observeById = container.observeFormulaById,
-            add = container.addFormula,
-            update = container.updateFormula
+            repository = repository
         )
     }
+
     val state by viewModel.uiState.collectAsState()
 
 

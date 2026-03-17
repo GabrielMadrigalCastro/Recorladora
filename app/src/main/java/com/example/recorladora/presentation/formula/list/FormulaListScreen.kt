@@ -34,18 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.recorladora.R
-import com.example.recorladora.model.Formula
-import com.example.recorladora.repository.AppContainer
+import com.example.recorladora.domain.repository.IFormulaRepository
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormulaListScreen(
-    container: AppContainer, onAdd: () -> Unit, onOpen: (Long) -> Unit, onEdit: (Long) -> Unit
+    repository: IFormulaRepository, onAdd: () -> Unit, onOpen: (Long) -> Unit, onEdit: (Long) -> Unit
 ) {
     // Factory manual (simple)
     val viewModel = remember {
-        FormulaListViewModel(container.observeAllFormulas, container.deleteFormula)
+        FormulaListViewModel(repository)
     }
     val state by viewModel.uiState.collectAsState()
 

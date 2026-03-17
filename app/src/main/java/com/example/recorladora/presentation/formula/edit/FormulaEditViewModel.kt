@@ -3,9 +3,7 @@ package com.example.recorladora.presentation.formula.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recorladora.database.AddFormulaUseCase
-import com.example.recorladora.database.ObserveFormulaByIdUseCase
-import com.example.recorladora.database.UpdateFormulaUseCase
+import com.example.recorladora.domain.repository.IFormulaRepository
 import com.example.recorladora.util.evaluateExpression
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,68 +25,64 @@ data class FormulaEditUiState(
 
 class FormulaEditViewModel(
     private val id: Long?,
-    private val observeById: ObserveFormulaByIdUseCase,
-    private val add: AddFormulaUseCase,
-    private val update: UpdateFormulaUseCase
+    private val repository: IFormulaRepository
 ) : ViewModel() {
-    private val title = MutableStateFlow("")
-    private val expression = MutableStateFlow("")
-    private val result = MutableStateFlow("")
-    private val loaded = MutableStateFlow(false)
 
-    val uiState: StateFlow<FormulaEditUiState> =
-        combine(title, expression, result, loaded) { t, e, r, isLoaded ->
-
-            val isEdit = id != null
-
-            FormulaEditUiState(
-                title = t,
-                expression = e,
-                result = r,
-                isEdit = isEdit
-            )
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            FormulaEditUiState()
-        )
+    private val _uiState = MutableStateFlow(
+        FormulaEditUiState(isEdit = id != null)
+    )
+    val uiState: StateFlow<FormulaEditUiState> = _uiState
 
     init {
         if (id != null) {
-            viewModelScope.launch {
-                observeById(id).collect { item ->
-                    if (item != null && !loaded.value) {
-                        title.value = item.title
-                        expression.value = item.expression
-                        result.value = item.result
-                        loaded.value = true
-                    }
-                }
+            loadFormula()
+        }
+    }
+
+    private fun loadFormula() {
+        viewModelScope.launch {
+            val formula = repository.getById(id!!)
+            if (formula != null) {
+                _uiState.value = FormulaEditUiState(
+                    title = formula.title,
+                    expression = formula.expression,
+                    result = formula.result,
+                    isEdit = true
+                )
             }
-        } else {
-            loaded.value = true
         }
     }
 
     fun onTitleChange(v: String) {
-        title.value = v
+        _uiState.value = _uiState.value.copy(title = v)
     }
 
     fun onExpressionChange(v: String) {
-        expression.value = v
-        result.value = evaluateExpression(v)
+        val result = evaluateExpression(v)
+        _uiState.value = _uiState.value.copy(
+            expression = v,
+            result = result
+        )
     }
 
     fun save(onDone: () -> Unit) {
         viewModelScope.launch {
-            val t = title.value
-            val e = expression.value
-            val r = result.value
+            val state = _uiState.value
 
-            if (id == null)
-                add(t, e, r)
-            else
-                update(id, t, e, r)
+            if (id == null) {
+                repository.create(
+                    state.title,
+                    state.expression,
+                    state.result
+                )
+            } else {
+                repository.update(
+                    id,
+                    state.title,
+                    state.expression,
+                    state.result
+                )
+            }
 
             onDone()
         }
